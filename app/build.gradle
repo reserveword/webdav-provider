@@ -70,6 +70,18 @@ android {
         resValues = true
     }
 
+    signingConfigs {
+        release {
+            def ksPath = System.getenv("KEYSTORE_FILE")
+            if (ksPath != null) {
+                storeFile rootProject.file(ksPath)
+                storePassword System.getenv("KEYSTORE_PASSWORD")
+                keyAlias System.getenv("KEY_ALIAS")
+                keyPassword System.getenv("KEY_PASSWORD")
+            }
+        }
+    }
+
     buildTypes {
         debug {
             applicationIdSuffix = ".debug"
@@ -86,6 +98,8 @@ android {
             minifyEnabled = true
             shrinkResources = true
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+
+            signingConfig = signingConfigs.release
         }
     }
 
